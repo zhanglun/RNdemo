@@ -49,7 +49,6 @@ export default class ListViewBasics extends Component {
     return fetch(url, {
       method: 'GET',
     }).then((res) => {
-      console.log(typeof res);
       return res.json();
     });
   }
@@ -57,12 +56,13 @@ export default class ListViewBasics extends Component {
   /**
     * movie 项点击
     */
-  onItemPressed() {
+  onItemPressed(movie) {
     let { navigator, route } = this.props;
     navigator.push({
-      title: 'Detail',
+      type: 'detail',
+      title: movie.title,
       index: route.index + 1,
-      id: 'detail',
+      id: movie.id,
     });
   }
 
@@ -79,7 +79,7 @@ export default class ListViewBasics extends Component {
   renderMovieItem(movie) {
     return (
       <TouchableOpacity onPress={() => {
-        this.onItemPressed();
+        this.onItemPressed(movie);
       }} style={styles.container}>
         <Image
           source={{uri: movie.images.large}}
@@ -103,7 +103,7 @@ export default class ListViewBasics extends Component {
     return (
       <View>
         <ListView
-        style={{flex: 1, paddingTop: 64}}
+        style={styles.listView}
         dataSource={this.state.dataSource}
         renderRow={this.renderMovieItem.bind(this)}
         automaticallyAdjustContentInsets={false}
@@ -114,11 +114,14 @@ export default class ListViewBasics extends Component {
 };
 
 const styles ={
+  listView: {
+    flex: 1,
+    paddingTop: 84,
+    backgroundColor: '#fff',
+  },
   container: {
     flex: 1,
     flexDirection: 'row',
-    // justifyContent: 'center',
-    // alignItems: 'center',
     borderBottomColor: '#d4d4d4',
     borderBottomWidth: 1,
   },
@@ -141,10 +144,6 @@ const styles ={
   thumbnail: {
     width: 80,
     height: 120,
-  },
-  listView: {
-    paddingTop: 20,
-    backgroundColor: '#F5FCFF',
   },
 };
 

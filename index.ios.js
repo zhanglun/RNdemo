@@ -21,9 +21,7 @@ export default class RNdemo extends Component {
 
   renderScene(route, navigator) {
     let _navigator = navigator;
-    switch(route.id) {
-      case 'fist':
-        return (<First navigator={navigator} title="first" />);
+    switch(route.type) {
       case 'list':
         return (<ListViewBasics navigator={navigator} route={route} />);
       case 'detail':
@@ -34,7 +32,16 @@ export default class RNdemo extends Component {
   render() {
     let NavigationBarRouteMapper = {
       LeftButton: function (route, navigator, index, navState) {
-        return null;
+        if (route.index > 0) {
+          return <Button
+            title="返回"
+            style={styles.navigatorButton}
+            onPress={() => {
+            navigator.pop();
+          }}>返回</Button>;
+        } else {
+          return null;
+        }
       },
 
       RightButton: function (route, navigator, index, navState) {
@@ -53,7 +60,7 @@ export default class RNdemo extends Component {
     return (
         <Navigator
           style={styles.navigator}
-          initialRoute={{ id: 'list', title: 'My Initial Scene', index: 0 }}
+          initialRoute={{ type: 'list', title: '电影列表', index: 0 }}
           renderScene={this.renderScene}
           navigationBar={
           <Navigator.NavigationBar
@@ -69,25 +76,30 @@ export default class RNdemo extends Component {
 
 const styles = {
   navigator: {
-    marginTop: 20,
-    marginBottom: 64,
+    backgroundColor: '#fff',
   },
   navigatorBar: {
-    alignItems: 'stretch',
+    marginTop: 20,
     borderBottomColor: '#d4d4d4',
     borderBottomWidth: 1,
     backgroundColor: '#fff',
+    alignItems: 'flex-start',
   },
   navigatorButton: {
     backgroundColor: 'orange',
   },
   container: {
     flex: 1,
+    backgroundColor: '#000',
   },
   welcome: {
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
+  },
+  navBarText: {
+    fontSize: 16,
+    marginTop: 2,
   },
   instructions: {
     textAlign: 'center',
