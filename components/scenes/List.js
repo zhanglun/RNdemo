@@ -54,13 +54,14 @@ export default class ListViewBasics extends Component {
     });
   }
 
+  /**
+    * movie 项点击
+    */
   onItemPressed() {
-    let alertMessage = 'Here is the alert message!';
-    Alert.alert('Alert Title', alertMessage);
     let { navigator, route } = this.props;
     navigator.push({
       title: 'Detail',
-      index: router.index + 1,
+      index: route.index + 1,
       id: 'detail',
     });
   }
@@ -104,7 +105,7 @@ export default class ListViewBasics extends Component {
         <ListView
         style={{flex: 1, paddingTop: 64}}
         dataSource={this.state.dataSource}
-        renderRow={this.renderMovieItem}
+        renderRow={this.renderMovieItem.bind(this)}
         automaticallyAdjustContentInsets={false}
         />
       </View>
