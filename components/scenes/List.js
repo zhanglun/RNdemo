@@ -5,6 +5,9 @@ import {
   Text,
   View,
   Image,
+
+  Alert,
+  TouchableOpacity,
 } from 'react-native';
 
 export default class ListViewBasics extends Component {
@@ -18,6 +21,17 @@ export default class ListViewBasics extends Component {
     };
   }
 
+  /**
+    * 在组件首次调用（render）之前调用。
+    * 在此处对this.state进行更新，无法触发重新渲染组件。
+    */
+  componentWillMount() {
+  }
+
+  /**
+    * 组件首次加载完成之后便会调用。
+    * 此时设置state将会导致组件重新被渲染
+    */
   componentDidMount() {
     let moviePromise = this.fetchMovieList();
     let ds = this.state.dataSource;
@@ -27,7 +41,6 @@ export default class ListViewBasics extends Component {
         dataSource: ds.cloneWithRows(subjects),
         loaded: true,
       });
-
     });
   }
 
@@ -38,6 +51,17 @@ export default class ListViewBasics extends Component {
     }).then((res) => {
       console.log(typeof res);
       return res.json();
+    });
+  }
+
+  onItemPressed() {
+    let alertMessage = 'Here is the alert message!';
+    Alert.alert('Alert Title', alertMessage);
+    let { navigator, route } = this.props;
+    navigator.push({
+      title: 'Detail',
+      index: router.index + 1,
+      id: 'detail',
     });
   }
 
@@ -52,21 +76,22 @@ export default class ListViewBasics extends Component {
   }
 
   renderMovieItem(movie) {
-    console.log(movie);
     return (
-      <View style={styles.container}>
-      <Image
-      source={{uri: movie.images.large}}
-      style={styles.thumbnail}
-      />
-      <View style={styles.rightContainer}>
-      <View style={styles.titleContainer}>
-      <Text style={styles.title}>{movie.title}({movie.original_title})</Text>
-      </View>
-      <Text>类型：{movie.genres}</Text>
-      <Text style={styles.year}>上映时间：{movie.year}</Text>
-      </View>
-      </View>
+      <TouchableOpacity onPress={() => {
+        this.onItemPressed();
+      }} style={styles.container}>
+        <Image
+          source={{uri: movie.images.large}}
+          style={styles.thumbnail}
+          />
+        <View style={styles.rightContainer}>
+          <View style={styles.titleContainer}>
+            <Text style={styles.title}>{movie.title}({movie.original_title})</Text>
+          </View>
+          <Text>类型：{movie.genres}</Text>
+          <Text style={styles.year}>上映时间：{movie.year}</Text>
+        </View>
+      </TouchableOpacity>
     );
   }
 
@@ -76,11 +101,12 @@ export default class ListViewBasics extends Component {
     }
     return (
       <View>
-      <ListView
-      style={{flex: 1, paddingTop: 64}}
-      dataSource={this.state.dataSource}
-      renderRow={this.renderMovieItem}
-      />
+        <ListView
+        style={{flex: 1, paddingTop: 64}}
+        dataSource={this.state.dataSource}
+        renderRow={this.renderMovieItem}
+        automaticallyAdjustContentInsets={false}
+        />
       </View>
     );
   }

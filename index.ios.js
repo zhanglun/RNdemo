@@ -12,15 +12,23 @@ import {
 } from 'react-native';
 
 import ListViewBasics from './components/scenes/List';
+import DetailView from './components/scenes/Detail';
 
 export default class RNdemo extends Component {
   constructor(props) {
     super(props);
-
   }
 
   renderScene(route, navigator) {
-    return <ListViewBasics navigator={navigator} />
+    let _navigator = navigator;
+    switch(route.id) {
+      case 'fist':
+        return (<First navigator={navigator} title="first" />);
+      case 'list':
+        return (<ListViewBasics navigator={navigator} route={route} />);
+      case 'detail':
+        return (<DetailView navigator={navigator} route={route} />);
+    }
   }
 
   render() {
@@ -44,21 +52,14 @@ export default class RNdemo extends Component {
 
     return (
         <Navigator
-         style={styles.navigator}
-        initialRoute={{ title: 'My Initial Scene', index: 0 }}
-        renderScene={this.renderScene}
-        navigationBar={
+          style={styles.navigator}
+          initialRoute={{ id: 'list', title: 'My Initial Scene', index: 0 }}
+          renderScene={this.renderScene}
+          navigationBar={
           <Navigator.NavigationBar
-          routeMapper={{
-            LeftButton: (route, navigator, index, navState) =>
-            { return (<Text title="Cancel">Cancel</Text>); },
-              RightButton: (route, navigator, index, navState) =>
-            { return (<Text title="Done">Done</Text>); },
-              Title: (route, navigator, index, navState) =>
-            { return (<Text>Movies</Text>); },
-          }}
-          style={styles.navigatorBar}
-          automaticallyAdjustContentInsets={false}
+            routeMapper={NavigationBarRouteMapper}
+            style={styles.navigatorBar}
+            automaticallyAdjustContentInsets={false}
           />
         }
       />
@@ -69,12 +70,16 @@ export default class RNdemo extends Component {
 const styles = {
   navigator: {
     marginTop: 20,
+    marginBottom: 64,
   },
   navigatorBar: {
-    alignItems: 'center',
+    alignItems: 'stretch',
     borderBottomColor: '#d4d4d4',
     borderBottomWidth: 1,
     backgroundColor: '#fff',
+  },
+  navigatorButton: {
+    backgroundColor: 'orange',
   },
   container: {
     flex: 1,
