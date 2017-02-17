@@ -77,9 +77,9 @@ export default class RNdemo extends Component {
 const styles = {
   navigator: {
     backgroundColor: '#fff',
+    marginTop: 20,
   },
   navigatorBar: {
-    marginTop: 20,
     borderBottomColor: '#d4d4d4',
     borderBottomWidth: 1,
     backgroundColor: '#fff',

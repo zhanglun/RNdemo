@@ -116,7 +116,7 @@ export default class ListViewBasics extends Component {
 const styles ={
   listView: {
     flex: 1,
-    paddingTop: 84,
+    paddingTop: 64,
     backgroundColor: '#fff',
   },
   container: {

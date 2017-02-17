@@ -68,7 +68,7 @@ export default class DetailView extends Component {
 const styles = {
   viewContainer: {
     flex: 1,
-    paddingTop: 84,
+    paddingTop: 64,
     backgroundColor: '#fff',
   },
   loadingContainer: {
